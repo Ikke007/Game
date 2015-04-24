@@ -3,6 +3,7 @@ import static org.lwjgl.opengl.GL11.*;
 import graphics.Shader;
 import input.Input;
 import level.Floor;
+import level.Level;
 import level.Player;
 import math.Matrix4f;
 import math.Vector3f;
@@ -12,8 +13,8 @@ public class Main implements Runnable {
 	private Window window;
 	private Thread thread;
 
-	private Player player;
-	private Floor floor;
+	private Level level;
+	
 	private Matrix4f pr_matrix;
 	private Matrix4f vw_matrix;
 	
@@ -34,8 +35,7 @@ public class Main implements Runnable {
 		Shader.PLAYER.setUniformMat4f("pr_matrix", pr_matrix);
 		Shader.FLOOR.setUniformMat4f("pr_matrix", pr_matrix);
 
-		player = new Player();
-		floor = new Floor();
+		level = new Level();
 
 	}
 
@@ -71,19 +71,16 @@ public class Main implements Runnable {
 //			if (i != GL_NO_ERROR)
 //				System.out.println(i);
 		}
+		
+		glfwDestroyWindow(window.getWindow());
+		glfwTerminate();
 
 	}
 	
 	private void update() {
 		glfwPollEvents();
-//		player.setPosition(new Vector3f(0, floor.getPosition().y+2, 0));
-//		if(player.getPosition().y >= floor.getPosition().y /*&& player.isJumping() == false*/){
-//			player.setJumping();
-//			Shader.PLAYER.setUniformMat4f("ml_matrix", Matrix4f.translate(player.getPosition()));
-//			player.setPosition(new Vector3f(0, -0.1f, 0));
-//		}
-		player.update();
-		floor.update();
+		
+		level.update();
 		
 		if(Input.isKeyDown(GLFW_KEY_ESCAPE))
 			glfwSetWindowShouldClose(window.getWindow(), GL_TRUE);
@@ -92,8 +89,7 @@ public class Main implements Runnable {
 	
 	private void render() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		player.render();
-		floor.render();
+		level.render();
 		glfwSwapBuffers(window.getWindow());
 	}
 

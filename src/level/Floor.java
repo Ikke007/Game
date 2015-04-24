@@ -13,8 +13,6 @@ public class Floor {
 	private byte[] indices;
 	private float[] tcs;
 	
-	private int lenght = 10;
-	
 	public Floor(){
 		
 		Shader.FLOOR.enable();
@@ -22,9 +20,9 @@ public class Floor {
 		Shader.FLOOR.disable();
 		
 		bottomLeft = 	new Vector3f(-10, -10, 0);
-		topLeft = 		new Vector3f(-10, -5 , 0); 
+		topLeft = 		new Vector3f(-10, -6 , 0); 
 		bottomRight =	new Vector3f( 10, -10, 0);
-		topRight = 		new Vector3f( 10, -5 , 0);
+		topRight = 		new Vector3f( 10, -6 , 0);
 		
 		
 		position = new Vector3f(0,-5,0);
@@ -52,15 +50,73 @@ public class Floor {
 		
 	}
 	
+	private int direction = 0;
+	private boolean changingDirection = false;
+	private int length = 1 * 60;
+	
 	public void update() {
 		
-		lenght--;
-		if(lenght < 0 && topRight.y <= 10) {
-			topLeft.y += 0.02f;
-			topRight.x -= 0.02f;
-			topRight.y += 0.02f;
-			bottomRight.x -= 0.02f;
+		if(changingDirection == false){
+			length--;
+			if(length == 0){
+				changingDirection = true;
+				direction++;
+			}
 		}
+			
+		if(changingDirection) {
+			switch (direction % 4) {
+			case 1:
+				if(topRight.y <= 10) {
+					topLeft.y += 0.05f;
+					topRight.x -= 0.05f;
+					topRight.y += 0.05f;
+					bottomRight.x -= 0.05f;
+				}else{
+					changingDirection = false;
+					length = 1 * 60;
+				}
+				break;
+			case 2:
+				if(bottomRight.x <= 10) {
+					bottomLeft.y += 0.05f;
+					topRight.x += 0.05f;
+					bottomRight.x += 0.05f;
+					bottomRight.y += 0.05f;
+					
+				}
+				else{
+					changingDirection = false;
+					length = 1 * 60;
+				}
+				break;
+			case 3:
+				if(bottomRight.y >= -10) {
+					topLeft.x += 0.05f;
+					bottomLeft.x += 0.05f;
+					bottomLeft.y -= 0.05f;
+					bottomRight.y -= 0.05f;
+				}
+				else{
+					changingDirection = false;
+					length = 1 * 60;
+				}
+				break;
+			case 0:
+				if(topLeft.x >= -10) {
+					topLeft.y -= 0.05f;
+					topLeft.x -= 0.05f;
+					topRight.y -= 0.05f;
+					bottomLeft.x -= 0.05f;
+				}
+				else{
+					changingDirection = false;
+					length = 1 * 60;
+				}
+				break;
+			}
+		}
+		
 		updateBuffer();
 		position.y = topRight.y;
 		
