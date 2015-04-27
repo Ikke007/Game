@@ -2,15 +2,15 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import graphics.Shader;
 import input.Input;
-import level.Floor;
 import level.Level;
-import level.Player;
 import math.Matrix4f;
-import math.Vector3f;
+
+import org.lwjgl.glfw.GLFWKeyCallback;
 
 public class Main implements Runnable {
 
 	private Window window;
+	private GLFWKeyCallback keyCallback;
 	private Thread thread;
 
 	private Level level;
@@ -22,9 +22,13 @@ public class Main implements Runnable {
 	
 	public void init() {
 
-		// ich teste hier einen Kommentar
 		window = new Window("GAME", 900, 1600);
 
+		keyCallback = window.getKeyCallback();
+		
+		
+		glfwSetKeyCallback(window.getWindow(), keyCallback = new Input());
+		
 		System.out.println("OpenGL-Version: " + glGetString(GL_VERSION));
 
 		glClearColor(1.0f, 1.0f, 0f, 1.0f);
@@ -75,6 +79,7 @@ public class Main implements Runnable {
 		
 		glfwDestroyWindow(window.getWindow());
 		glfwTerminate();
+		keyCallback.release();
 
 	}
 	

@@ -3,6 +3,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.*;
 import input.Input;
 
+import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GLContext;
 
@@ -11,6 +12,7 @@ public class Window {
 	private int height, width;
 	private long window;
 	private String title;
+	private GLFWKeyCallback keyCallback;
 	
 	public Window(String title, int height, int width) {
 		this.title = title;
@@ -45,7 +47,7 @@ public class Window {
 		
 		// Set Callbacks
 		glfwSetWindowSizeCallback(window, new WindowResizeCallback());
-		glfwSetKeyCallback(window, new Input());
+		
 		
 		glfwShowWindow(window);
 		
@@ -55,6 +57,10 @@ public class Window {
 	
 	public long getWindow(){
 		return window;
+	}
+	
+	public GLFWKeyCallback getKeyCallback(){
+		return keyCallback;
 	}
 	
 	public void initOpenGL(){
