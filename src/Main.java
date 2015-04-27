@@ -22,6 +22,7 @@ public class Main implements Runnable {
 	
 	public void init() {
 
+		// ich teste hier einen Kommentar
 		window = new Window("GAME", 900, 1600);
 
 		System.out.println("OpenGL-Version: " + glGetString(GL_VERSION));
