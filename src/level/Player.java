@@ -9,7 +9,6 @@ import math.Vector3f;
 public class Player {
 
 	private VertexArray player;
-	private float rotation;
 	private Vector3f position;
 	private boolean isJumping;
 	
@@ -17,7 +16,6 @@ public class Player {
 
 	public Player() {
 
-		rotation = 0;
 		position = new Vector3f(0, 0, 0);
 		isJumping = false;
 
@@ -57,61 +55,72 @@ public class Player {
 		player.render();
 		Shader.PLAYER.disable();
 	}
+	
+	private Vector3f leftKeyMovement;
+	private Vector3f rightKeyMovement;
+	private Vector3f upKeyMovement;
+	private Vector3f downKeyMovement;
+	
 	public void update() {
 		
-		if (Input.isKeyDown(GLFW_KEY_LEFT)) {
-			if (position.x > -10f + SIZE/2) {
-				setPosition(new Vector3f(-0.1f, 0, 0));
-			}
-		}
-		if (Input.isKeyDown(GLFW_KEY_RIGHT)) {
-			if (position.x <= 10 - SIZE/2) {
-				setPosition(new Vector3f(0.1f, 0, 0));
-			}
-
-		}
-		if (Input.isKeyDown(GLFW_KEY_DOWN)) {
-			if (position.x <= 10 - SIZE/2) {
-				setPosition(new Vector3f(0, -0.1f, 0));
-			}
-
-		}
+		if (Input.isKeyDown(GLFW_KEY_LEFT))
+			addPosition(leftKeyMovement);
+		
+		if (Input.isKeyDown(GLFW_KEY_RIGHT))
+			addPosition(rightKeyMovement);
+		
+		if (Input.isKeyDown(GLFW_KEY_DOWN))
+			addPosition(downKeyMovement);
+		
 		if (Input.isKeyDown(GLFW_KEY_UP)) {
-			if (position.y < 10 - SIZE/2) {
-				isJumping = true;
-				setPosition(new Vector3f(0, 0.1f, 0));
-			}
+			isJumping = true;
+			addPosition(upKeyMovement);
 		}
-		if (!Input.isKeyDown(GLFW_KEY_UP)) {
+		
+		if (!Input.isKeyDown(GLFW_KEY_UP))
 			isJumping = false;
-		}
 
 	}
 
+	public float getSize() {
+		return SIZE;
+	}
+	
 	public boolean isJumping() {
 		return isJumping;
-	}
-
-	public void setJumping() {
-		isJumping = false;
-	}
-
-	public float getRotation() {
-		return rotation;
-	}
-
-	public void setRotation(float rotation) {
-		this.rotation += rotation;
 	}
 
 	public Vector3f getPosition() {
 		return position;
 	}
 
-	public void setPosition(Vector3f position) {
+	public void addPosition(Vector3f position) {
 		this.position.x += position.x;
 		this.position.y += position.y;
 		this.position.z += position.z;
 	}
+	
+	public void setYPosition(float y) {
+		position.y = y;
+	}
+	
+	public void setXPosition(float x) {
+		position.x = x;
+	}
 
+	public void setLeftKeyMovement(Vector3f leftKeyMovement){
+		this.leftKeyMovement = leftKeyMovement;
+	}
+
+	public void setRightKeyMovement(Vector3f rightKeyMovement) {
+		this.rightKeyMovement = rightKeyMovement;
+	}
+
+	public void setUpKeyMovement(Vector3f upKeyMovement) {
+		this.upKeyMovement = upKeyMovement;
+	}
+	
+	public void setDownKeyMovement(Vector3f downKeyMovement) {
+		this.downKeyMovement = downKeyMovement;
+	}
 }

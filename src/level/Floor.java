@@ -50,7 +50,8 @@ public class Floor {
 		
 	}
 	
-	private int direction = 0;
+	private int floorDirection = 0;
+	private int movingDirection = 0;
 	private boolean changingDirection = false;
 	private int length = 1 * 60;
 	
@@ -60,13 +61,13 @@ public class Floor {
 			length--;
 			if(length == 0){
 				changingDirection = true;
-				direction++;
+				
 			}
 		}
 			
 		if(changingDirection) {
-			switch (direction % 4) {
-			case 1:
+			switch (floorDirection % 4) {
+			case 0:
 				if(topRight.y <= 10) {
 					topLeft.y += 0.05f;
 					topRight.x -= 0.05f;
@@ -74,23 +75,24 @@ public class Floor {
 					bottomRight.x -= 0.05f;
 				}else{
 					changingDirection = false;
-					length = 1 * 60;
+					length = 2 * 60;
+					floorDirection++;
 				}
 				break;
-			case 2:
+			case 1:
 				if(bottomRight.x <= 10) {
 					bottomLeft.y += 0.05f;
 					topRight.x += 0.05f;
 					bottomRight.x += 0.05f;
 					bottomRight.y += 0.05f;
-					
 				}
 				else{
 					changingDirection = false;
-					length = 1 * 60;
+					length = 2 * 60;
+					floorDirection++;
 				}
 				break;
-			case 3:
+			case 2:
 				if(bottomRight.y >= -10) {
 					topLeft.x += 0.05f;
 					bottomLeft.x += 0.05f;
@@ -99,10 +101,11 @@ public class Floor {
 				}
 				else{
 					changingDirection = false;
-					length = 1 * 60;
+					length = 2 * 60;
+					floorDirection++;
 				}
 				break;
-			case 0:
+			case 3:
 				if(topLeft.x >= -10) {
 					topLeft.y -= 0.05f;
 					topLeft.x -= 0.05f;
@@ -111,14 +114,14 @@ public class Floor {
 				}
 				else{
 					changingDirection = false;
-					length = 1 * 60;
+					length = 2 * 60;
+					floorDirection++;
 				}
 				break;
 			}
 		}
 		
 		updateBuffer();
-		position.y = topRight.y;
 		
 	}
 	
@@ -128,20 +131,42 @@ public class Floor {
 		Shader.FLOOR.disable();
 	}
 	
+	private void updateBuffer() {
+		vertices = new float[] {
+			bottomLeft.x, 	bottomLeft.y	* 9.0f / 16.0f, 0,
+			topLeft.x, 		topLeft.y  		* 9.0f / 16.0f, 0,
+			bottomRight.x, 	bottomRight.y 	* 9.0f / 16.0f, 0,
+			topRight.x, 	topRight.y  	* 9.0f / 16.0f, 0
+		};
+		
+		floor = new VertexArray(vertices, indices, tcs);
+	}
+	
+	public void setDirection() {
+		movingDirection++;
+	}
+	
+	public int getMovingDirection() {
+		return movingDirection % 4;
+	}
+	
 	public Vector3f getPosition() {
 		return position;
 	}
 	
-	private void updateBuffer() {
-		
-		vertices = new float[] {
-				bottomLeft.x, 	bottomLeft.y	* 9.0f / 16.0f, 0,
-				topLeft.x, 		topLeft.y  		* 9.0f / 16.0f, 0,
-				bottomRight.x, 	bottomRight.y 	* 9.0f / 16.0f, 0,
-				topRight.x, 	topRight.y  	* 9.0f / 16.0f, 0
-			};
-		
-		floor = new VertexArray(vertices, indices, tcs);
-		
+	public Vector3f getTopRight() {
+		return topRight;
+	}
+
+	public Vector3f getTopLeft() {
+		return topLeft;
+	}
+
+	public Vector3f getBottomRight() {
+		return bottomRight;
+	}
+
+	public Vector3f getBottomLeft() {
+		return bottomLeft;
 	}
 }
