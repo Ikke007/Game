@@ -3,6 +3,7 @@ import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.FixtureDef;
 
 import graphics.Shader;
 import graphics.VertexArray;
@@ -20,6 +21,7 @@ public class Floor {
 	
 	private BodyDef def;
 	private PolygonShape shape;
+	private FixtureDef fDef;
 	
 	public Floor(){
 		
@@ -72,6 +74,16 @@ public class Floor {
 		shape = new PolygonShape();
 		shape.set(vertices1, 4);
 		
+		fDef = new FixtureDef();
+		fDef.shape = shape;
+		fDef.density = 0.5f;
+		fDef.friction = 0.0f;
+		fDef.restitution = 0.5f;
+		
+	}
+	
+	public FixtureDef getFixture(){
+		return fDef;
 	}
 	
 	public PolygonShape getShape() {

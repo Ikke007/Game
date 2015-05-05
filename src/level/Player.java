@@ -1,17 +1,14 @@
 package level;
-import static org.lwjgl.glfw.GLFW.*;
+import graphics.Shader;
+import graphics.VertexArray;
+import math.Matrix4f;
+import math.Vector3f;
 
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
-
-import graphics.Shader;
-import graphics.VertexArray;
-import input.Input;
-import math.Matrix4f;
-import math.Vector3f;
+import org.jbox2d.dynamics.FixtureDef;
 
 public class Player {
 
@@ -23,6 +20,7 @@ public class Player {
 
 	private BodyDef def;
 	private PolygonShape shape;
+	private FixtureDef fDef;
 	
 	public Player() {
 
@@ -70,11 +68,22 @@ public class Player {
 		def.type = BodyType.DYNAMIC;
 		def.position.set(4, 4);
 		def.fixedRotation = false;
+	
 		
 		shape = new PolygonShape();
 		shape.set(vertices1, 4);
+		fDef = new FixtureDef();
+		fDef.shape = shape;
+		fDef.density = 0.5f;
+		fDef.friction = 0.0f;
+		fDef.restitution = 0.5f;
 		
 		
+		
+	}
+	
+	public FixtureDef getFixture(){
+		return fDef;
 	}
 	
 	public void pos(Vec2 vec) {

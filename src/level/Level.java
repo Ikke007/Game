@@ -1,6 +1,8 @@
 package level;
 
 import input.Input;
+import org.jbox2d.callbacks.DebugDraw;
+
 import static org.lwjgl.glfw.GLFW.*;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -24,13 +26,11 @@ public class Level {
 		
 		world = new World(new Vec2(0, -2f), false);
 		pbody = world.createBody(player.getBody());
-		pbody.createFixture(player.getShape(), 1.0f);
+		pbody.createFixture(player.getFixture());
 		fbody = world.createBody(floor.getBody());
-		fbody.createFixture(floor.getShape(), 0.0f);
+		fbody.createFixture(floor.getFixture());
 		
 //		pbody.getTransform().position
-		
-		
 		
 	}
 	
@@ -188,12 +188,14 @@ public class Level {
 		player.update();
 		floor.update();
 		
+		
 	}
 	
 	public void render() {
 		
 		player.render();
 		floor.render();
+		world.drawDebugData();
 		
 	}
 	
