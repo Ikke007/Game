@@ -1,5 +1,12 @@
 package level;
 import static org.lwjgl.glfw.GLFW.*;
+
+import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.BodyType;
+
 import graphics.Shader;
 import graphics.VertexArray;
 import input.Input;
@@ -14,6 +21,9 @@ public class Player {
 	
 	public final float SIZE = 1;
 
+	private BodyDef def;
+	private PolygonShape shape;
+	
 	public Player() {
 
 		position = new Vector3f(0, 0, 0);
@@ -44,12 +54,44 @@ public class Player {
 				1, 0,
 				1, 1 
 		};
+		
+		Vec2[] vertices1 = new Vec2[] {
+			new Vec2(-SIZE / 2, -SIZE / 2),
+			new Vec2(-SIZE / 2,  SIZE / 2),
+			new Vec2( SIZE / 2,  SIZE / 2),
+			new Vec2( SIZE / 2, -SIZE / 2)
+			
+		};
 
 		player = new VertexArray(vertices, indices, tcs);
 
+		
+		def = new BodyDef();
+		def.type = BodyType.DYNAMIC;
+		def.position.set(4, 4);
+		def.fixedRotation = false;
+		
+		shape = new PolygonShape();
+		shape.set(vertices1, 4);
+		
+		
+	}
+	
+	public void pos(Vec2 vec) {
+		position.x = vec.x;
+		position.y = vec.y;
+	}
+	
+	public PolygonShape getShape() {
+		return shape;
+	}
+	
+	public BodyDef getBody() {
+		return def;
 	}
 
 	public void render() {
+//		System.out.println(def.position.y);
 		Shader.PLAYER.enable();
 		Shader.PLAYER.setUniformMat4f("ml_matrix", Matrix4f.translate(position));
 		player.render();
@@ -63,22 +105,25 @@ public class Player {
 	
 	public void update() {
 		
-		if (Input.isKeyDown(GLFW_KEY_LEFT))
-			addPosition(leftKeyMovement);
 		
-		if (Input.isKeyDown(GLFW_KEY_RIGHT))
-			addPosition(rightKeyMovement);
 		
-		if (Input.isKeyDown(GLFW_KEY_DOWN))
-			addPosition(downKeyMovement);
-		
-		if (Input.isKeyDown(GLFW_KEY_UP)) {
-			isJumping = true;
-			addPosition(upKeyMovement);
-		}
-		
-		if (!Input.isKeyDown(GLFW_KEY_UP))
-			isJumping = false;
+//		
+//		if (Input.isKeyDown(GLFW_KEY_LEFT))
+//			addPosition(leftKeyMovement);
+//		
+//		if (Input.isKeyDown(GLFW_KEY_RIGHT))
+//			addPosition(rightKeyMovement);
+//		
+//		if (Input.isKeyDown(GLFW_KEY_DOWN))
+//			addPosition(downKeyMovement);
+//		
+//		if (Input.isKeyDown(GLFW_KEY_UP)) {
+//			isJumping = true;
+//			addPosition(upKeyMovement);
+//		}
+//		
+//		if (!Input.isKeyDown(GLFW_KEY_UP))
+//			isJumping = false;
 
 	}
 

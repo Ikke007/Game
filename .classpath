@@ -2,10 +2,15 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="jar/lwjgl.jar" sourcepath="src.zip">
+	<classpathentry kind="lib" path="C:/Users/Hendrik/git/Game/libs/jar/lwjgl.jar" sourcepath="libs/src/src.zip">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/C:/Users/Hendrik/workspace/Game/doc/javadoc/"/>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Game/native/windows/x64"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Hendrik/git/Game/libs/jar/jbox2d-library-2.1.2.jar" sourcepath="libs/src/jbox2d-library-2.1.2.2-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/Hendrik/git/Game/doc/jbox2d-library-2.1.2.0-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
